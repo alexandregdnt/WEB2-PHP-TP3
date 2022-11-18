@@ -1,0 +1,22 @@
+{
+    "name": "Blog",
+    "description": "Un super blog réalisé dans le cadre du cours “Support Back“ à HETIC. Le projet est programmé en PHP natif (sans framework) tout en utilisant le modèle MVC, le tout en POO. Les données sont stockée dans une base de données MySQL.",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexandre Grodent",
+            "homepage": "github.com/alexandregdnt"
+        },
+        {
+            "name": "Alan Lemey"
+        },
+        {
+            "name": "Jessica Marie Sainte"
+        }
+    ],
+    "require": {}
+}
