@@ -8,11 +8,6 @@ use App\Managers\Exceptions\UserException;
 use App\Managers\PostManager;
 use App\Managers\UserManager;
 
-const USER_USER = "user";
-const USER_EDITOR = "editor";
-const USER_ADMIN = "admin";
-const USER_OWNER = "owner";
-
 class User extends BaseEntity {
     private ?int $id = null;
     private string $username = '';
@@ -37,7 +32,7 @@ class User extends BaseEntity {
     public function __construct(array $data = [])
     {
         //        $this->roles = [new Role()];
-//        $this->created_at = date('Y-m-d H:i:s');
+        $this->created_at = date('Y-m-d H:i:s');
         $this->updated_at = date('Y-m-d H:i:s');
 
         parent::__construct($data);
@@ -77,12 +72,12 @@ class User extends BaseEntity {
         $this->email = $email;
     }
 
-    public function setPhone(string $phone): void
+    public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
     }
 
-    public function setBio(string $bio): void
+    public function setBio(?string $bio): void
     {
         $this->bio = $bio;
     }
@@ -107,17 +102,17 @@ class User extends BaseEntity {
         $this->lastname = $lastname;
     }
 
-    public function setDateOfBirth(string $date_of_birth): void
+    public function setDateOfBirth(?string $date_of_birth): void
     {
         $this->date_of_birth = $date_of_birth;
     }
 
-    public function setAvatarUrl(string $avatar_url): void
+    public function setAvatarUrl(?string $avatar_url): void
     {
         $this->avatar_url = $avatar_url;
     }
 
-    public function setCreatedAt(string $created_at): void
+    public function setCreatedAt(?string $created_at): void
     {
         $this->created_at = $created_at;
     }
@@ -205,6 +200,16 @@ class User extends BaseEntity {
             $this->roles = $manager->getUserRoles($this->getId());
         }
         return $this->roles;
+    }
+
+    public function userRolesContains(string $role): bool
+    {
+        foreach ($this->getRoles() as $userRole) {
+            if ($userRole->getName() === $role) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

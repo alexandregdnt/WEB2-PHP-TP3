@@ -12,7 +12,7 @@ class Route
     private ?string $controller = null;
     private ?string $action = null;
     private array $params = [];
-    private array $methods = [HttpMethods::GET];
+    private array $methods = ["GET"];
 
     public function __construct(string $path, ?string $name = null, ?array $methods = null)
     {

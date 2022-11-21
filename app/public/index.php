@@ -13,6 +13,7 @@ use App\Routes\Route;
 $controllersDir = dirname(__FILE__) . '/../src/Controllers/';
 $dirs = scandir($controllersDir);
 $url = "/" . trim(explode("?", $_SERVER['REQUEST_URI'])[0], "/");
+$user = isset($_SESSION['user']) ? unserialize($_SESSION['user']) : null;
 $routesObj = [];
 $controllers = [];
 
@@ -52,7 +53,8 @@ foreach ($routesObj as $route) {
     $action = $route->getAction();
     $params = $route->mergeParams($url);
 
-    new $controllerClassName($action, $params);
+//    new $controllerClassName($action, $params, $user);
+    echo [new $controllerClassName(), $action](...$params);
     exit;
 }
 

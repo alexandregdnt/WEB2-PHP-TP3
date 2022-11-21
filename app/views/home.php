@@ -1,9 +1,17 @@
+<?php
+/**
+ * @var App\Entities\Post[] $posts
+ */
+?>
 
     <h1>TOUS LES POSTS</h1>
 
-    <?php
-    /** @var App\Entities\Post[] $posts */
-    foreach ($posts as $post) {
-        echo $post->getContent();
-    }
-    ?>
+    <?php foreach ($posts as $post): ?>
+        <div class="post">
+            <h2><?= $post->getTitle() ?></h2>
+            <p><?= $post->getContent() ?></p>
+            <p><?= $post->getCreatedAt() ?></p>
+            <p><?= $post->getUpdatedAt() ?></p>
+            <p><?= $post->getAuthor()->getUsername() ?></p>
+        </div>
+    <?php endforeach; ?>

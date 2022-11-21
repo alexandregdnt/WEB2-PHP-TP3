@@ -2,11 +2,12 @@
 
 namespace App\Types;
 
-enum HttpMethods {
-    case GET;
-    case POST;
-    case PUT;
-    case PATCH;
-    case DELETE;
-    case OPTIONS;
+enum HttpMethods: string
+{
+    case GET = "GET";
+    case POST = "POST";
+    case PUT = "PUT";
+    case PATCH = "PATCH";
+    case DELETE = "DELETE";
+    case OPTIONS = "OPTIONS";
 }
