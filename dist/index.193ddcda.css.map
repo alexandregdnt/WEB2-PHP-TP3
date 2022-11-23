@@ -1,0 +1,1 @@
+{"mappings":"AAAA;;;;;;AAKA","sources":["app/src/css/index.css"],"sourcesContent":[".section-header {\n    background-color: black;\n    height: 80vh;\n    padding: 1rem;\n}\n.h1 {\n    font-size: 2rem;\n}\n"],"names":[],"version":3,"file":"index.193ddcda.css.map","sourceRoot":"/__parcel_source_root/"}

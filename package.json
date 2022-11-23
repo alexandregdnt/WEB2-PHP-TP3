@@ -1,0 +1,15 @@
+{
+  "name": "Blog",
+  "source": "app/public/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.8.0",
+    "parcel": "^2.8.0"
+  },
+  "dependencies": {
+    "yarn": "^1.22.19"
+  }
+}
