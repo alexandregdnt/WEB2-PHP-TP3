@@ -35,8 +35,9 @@ npm run sass-dev
 - installer une webAp avec parcel en suivant ceci => https://parceljs.org/getting-started/webapp/
 
 - lancer le server local
+positionner le terminal  = 'cd app/public'
 ```
-npx parcel 
+parcel index.html
 ```
 ou
 ```
@@ -45,7 +46,7 @@ yarn start
 
 - pour build le projet 
 ```
-npx parcel build 
+npm run build 
 ````
 ou
 ```
