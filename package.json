@@ -1,0 +1,30 @@
+{
+  "name": "web2-php-tp3",
+  "version": "1.0.0",
+  "description": "Un blog en php réalisé dans le cadre de la formation de développeur web d'HETIC.",
+  "source": "app/public/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build",
+    "sass-dev": "sass --watch --update --style=expanded assets/scss:assets/css",
+    "sass-prod": "sass --no-source-map --style=compressed assets/scss:assets/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandregdnt/WEB2-PHP-TP3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexandregdnt/WEB2-PHP-TP3/issues"
+  },
+  "homepage": "https://github.com/alexandregdnt/WEB2-PHP-TP3#readme",
+  "devDependencies": {
+    "parcel": "^2.8.0",
+    "sass": "^1.56.1"
+  },
+  "dependencies": {
+    "node": "^19.1.0",
+    "parcel": "latest"
+  }
+}
