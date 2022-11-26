@@ -49,7 +49,7 @@ npm run sass-dev
 ## pour build le projet 
 positionner le terminal  = 'cd app/public'
 ```
-parcel build index.html --no-minify
+parcel build index.html --no-minify (marche pas)
 ````
 ou
 ```

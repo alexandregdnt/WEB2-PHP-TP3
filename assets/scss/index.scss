@@ -1,3 +1,19 @@
+// --------------------------------------------------------------
+//  Variable CSS        
+// --------------------------------------------------------------
+$color-pink: #C9356E;
+$color-lightBlue: #B7DCF4;
+$color-blue: #045A95;
+$color-text: #000000;
+$font-size-text: 14px;
+$font-size-h1: 80px;
+$font-size-h2: 50px;
+$font-size-h3: 40px;
+$font-size-h4: 30px;
+$font-weight-titre: 800;
+
+
+
 * {
     margin: 0;
     padding: 0;
@@ -5,7 +21,9 @@
 }
 body {
     font-family: 'Spectral', serif;
+    $font-size-text: 14px;
     overflow-x: hidden;
+    color: $color-text;
 }
 // --------------------------------------------------------------
 //            
@@ -19,7 +37,8 @@ body {
 //            Section header
 // --------------------------------------------------------------
 .section-header {
-    background-color: black;
+    background-image: url(../image/image-16.png);
+    object-fit: cover;
     height: 30vh;
     padding: 1rem;
     &__wrapper {
@@ -29,18 +48,29 @@ body {
         align-items: flex-start;
     }
     .h1 {
-        font-size: 4rem;
+        font-size: $font-size-h1;
         margin-top: 5rem;
         padding-right: 10%;
         text-decoration: none;
-        color: #ffffff;
+        font-weight: $font-weight-titre;
+        color: $color-text;
     }
     .nav-link {
         padding-bottom: 0;
+        font-weight: $font-weight-titre;
+        color: $color-text;
     }
+    .dropdown-menu {
+        background-color: $color-lightBlue;
+        color:$color-text    }
     .section-header__user {
-        color: white;
         text-decoration: none;
+        font-weight: $font-weight-titre;
+        button.nav-link {
+            background-color: transparent;
+            border: none;
+
+        }
         svg {
             margin-left: 0.5rem;
         }
@@ -88,47 +118,62 @@ body {
 //            Section Post On top
 // --------------------------------------------------------------
 .section__OnTop {
+    background-color: #045A95;
     padding: 3rem;
     display: flex;
-    flex-direction: row;
     gap: 3%;
+    flex-direction: row;
     height: fit-content;
     .OnTop__card, .OnTop__aside {
         display: flex;
         flex-direction: column;
     }
     .OnTop__card {
-        gap: 2%;
-        width: 60%;
+        width: 100%;
+        .aside-card__card-title h2 {
+            font-size: $font-size-h2;
+        }
         .OnTop-card-img {
-            border: 1px solid black;
             width: 100%;
             height: 450px;
-            margin-bottom: 5%
+            margin-bottom: 5%;
+            img {
+                object-fit: contain;
+                width: inherit;
+            }
+        }
+        .onTop__description {
+            padding: 20px 10px;
+            background-color: #B7DCF4;
         }
     }
     .OnTop__aside {
-        gap: 2%
+        gap: 2%;
+        justify-content: space-between;
     }
     .aside-card__card-title {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
     }
     .OnTop__aside-card {
         display: flex;
         flex-direction: row;
-        gap: 2%;
-        height: 100%;
+        height: fit-content;
+        
         .aside-card__card-img {
-            width: 100%;
-            height: 80%;
-            border: 1px solid black;
+            width: 95%;
+            img {
+                width: 100%;
+            }
         }
         .aside-card__description {
+            padding: 10px 10px 10px 20px;
             display: flex;
             flex-direction: column;
             gap: 2%;
+            background-color: #B7DCF4;
         }
         h2 {
             font-size: revert;
