@@ -27,29 +27,33 @@ Voici la commande à exécuter pour installer et exécuter le projet : `docker c
 ````
 npm init
 ``
-- installer sass et lancer sass
+- installer sass 
 ```
 npm install sass --save-dev
-npm run sass-dev
 ```
 - installer une webAp avec parcel en suivant ceci => https://parceljs.org/getting-started/webapp/
 
-- lancer le server local
+
+## lancer le server local
+
+positionner le terminal  = 'cd app/public'
 ```
-npx parcel 
+parcel index.html
 ```
 ou
 ```
-yarn start
+npm run sass-dev
 ```
 
-- pour build le projet 
+
+## pour build le projet 
+positionner le terminal  = 'cd app/public'
 ```
-npx parcel build 
+parcel build index.html --no-minify (marche pas)
 ````
 ou
 ```
-yarn build
+npm run sass-prod
 ```
 
 Pour arrêter le projet, écrivez `docker compose down`.
