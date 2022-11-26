@@ -5,7 +5,7 @@
   "source": "app/public/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --dist-dir index.html",
+    "build": "parcel build index.html",
     "sass-dev": "sass --watch --update --style=expanded assets/scss:assets/css",
     "sass-prod": "sass --no-source-map --style=compressed assets/scss:assets/css"
   },
@@ -20,8 +20,10 @@
   },
   "homepage": "https://github.com/alexandregdnt/WEB2-PHP-TP3#readme",
   "devDependencies": {
+    "cssnano": "^5.1.14",
     "parcel": "^2.8.0",
     "parcel-bundler": "^1.12.5",
+    "postcss": "^8.2.15",
     "sass": "^1.56.1"
   },
   "dependencies": {
