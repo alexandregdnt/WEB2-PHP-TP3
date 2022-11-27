@@ -6,6 +6,7 @@ use App\Factories\PDOFactory;
 use App\Helpers\Filters;
 use App\Helpers\Tools;
 use App\Managers\Exceptions\PostException;
+use App\Managers\Exceptions\UserException;
 use App\Managers\PostManager;
 use App\Routes\Route;
 use App\Types\HttpMethods;
@@ -31,9 +32,15 @@ class PostController extends AbstractController
     {
         $manager = new PostManager(new PDOFactory());
         $post = $manager->getPostById($id);
+        try {
+            $comments = $post->getComments();
+        } catch (\Exception $e) {
+            $comments = [];
+        }
 
         return $this->render("postView.php", [
             "post" => $post,
+            "comments" => $comments,
         ], $post->getTitle());
     }
 

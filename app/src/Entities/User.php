@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Factories\PDOFactory;
+use App\Helpers\Regex;
 use App\Managers\Exceptions\PostException;
 use App\Managers\Exceptions\UserException;
 use App\Managers\PostManager;
@@ -16,6 +17,7 @@ class User extends BaseEntity {
     private ?string $bio = null;
     private array $roles = [];
     private string $password = '';
+    private string $hashed_password = '';
     private string $firstname = '';
     private string $lastname = '';
     private ?string $date_of_birth = null;
@@ -37,24 +39,6 @@ class User extends BaseEntity {
 
         parent::__construct($data);
     }
-    public function __copy(User $user): User
-    {
-        $instance = new self();
-        $instance->id = $user->getId();
-        $instance->username = $user->getUsername();
-        $instance->email = $user->getEmail();
-        $instance->phone = $user->getPhone();
-        $instance->bio = $user->getBio();
-        $instance->roles = $user->getRoles();
-        $instance->password = $user->getPassword();
-        $instance->firstname = $user->getFirstname();
-        $instance->lastname = $user->getLastname();
-        $instance->date_of_birth = $user->getDateOfBirth();
-        $instance->avatar_url = $user->getAvatarUrl();
-        $instance->created_at = $user->getCreatedAt();
-        $instance->updated_at = $user->getUpdatedAt();
-        return $instance;
-    }
 
     /*==================== SETTERS ====================*/
     public function setId($id): void
@@ -62,19 +46,42 @@ class User extends BaseEntity {
         $this->id = $id;
     }
 
+    /**
+     * @throws UserException
+     */
     public function setUsername(string $username): void
     {
-        $this->username = $username;
+        if (Regex::validateUsername($username)) {
+            $this->username = $username;
+        } else {
+            throw new UserException('Invalid username');
+        }
     }
 
+    /**
+     * @throws UserException
+     */
     public function setEmail(string $email): void
     {
-        $this->email = $email;
+        if (Regex::validateEmail($email)) {
+            $this->email = $email;
+        } else {
+            throw new UserException('Invalid email');
+        }
     }
 
+    /**
+     * @throws UserException
+     */
     public function setPhone(?string $phone): void
     {
-        $this->phone = $phone;
+        if ($phone === null || strlen($phone) === 0) {
+            $this->phone = null;
+        } elseif (Regex::validatePhone($phone)) {
+            $this->phone = $phone;
+        } else {
+            throw new UserException('Invalid phone');
+        }
     }
 
     public function setBio(?string $bio): void
@@ -82,19 +89,33 @@ class User extends BaseEntity {
         $this->bio = $bio;
     }
 
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
-    }
-
+    /**
+     * @throws UserException
+     */
     public function setPassword(string $password): void
     {
-        $this->password = $password;
+        if (Regex::validatePassword($password)) {
+            $this->password = $password;
+        } else {
+            throw new UserException('Invalid password');
+        }
     }
 
+    public function setHashedPassword(string $hashedPassword): void
+    {
+        $this->hashed_password = $hashedPassword;
+    }
+
+    /**
+     * @throws UserException
+     */
     public function setFirstname(string $firstname): void
     {
-        $this->firstname = $firstname;
+        if (Regex::validateName($firstname)) {
+            $this->firstname = $firstname;
+        } else {
+            throw new UserException('Invalid firstname');
+        }
     }
 
     public function setLastname(string $lastname): void
@@ -104,7 +125,11 @@ class User extends BaseEntity {
 
     public function setDateOfBirth(?string $date_of_birth): void
     {
-        $this->date_of_birth = $date_of_birth;
+        if ($date_of_birth === null || strlen($date_of_birth) === 0) {
+            $this->date_of_birth = null;
+        } else {
+            $this->date_of_birth = $date_of_birth;
+        }
     }
 
     public function setAvatarUrl(?string $avatar_url): void
@@ -153,6 +178,11 @@ class User extends BaseEntity {
         return $this->password;
     }
 
+    public function getHashedPassword(): string
+    {
+        return $this->hashed_password;
+    }
+
     public function getFirstname(): string
     {
         return $this->firstname;
@@ -184,10 +214,12 @@ class User extends BaseEntity {
     }
 
     /*====================*/
-    public function passwordMatch(): bool
+    public function passwordMatch(?string $password = null): bool
     {
-        // TODO: Implement passwordMatch() method.
-        return password_verify($this->password, PASSWORD_DEFAULT);
+        if ($password === null) {
+            $password = $this->password;
+        }
+        return password_verify($password, $this->hashed_password);
     }
 
     /**

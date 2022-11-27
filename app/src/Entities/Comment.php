@@ -2,19 +2,37 @@
 
 namespace App\Entities;
 
+use App\Factories\PDOFactory;
+use App\Managers\CommentManager;
+use App\Managers\Exceptions\UserException;
+use App\Managers\PostManager;
+use App\Managers\UserManager;
+
 class Comment extends BaseEntity
 {
-    private int $id;
+    private ?int $id = null;
     private int $post_id;
-    private int $author_id;
-    private string $content;
+    private ?int $author_id = null;
+    private string $content = '';
     private ?string $created_at = null;
     private array $likes = [];
     private array $answers = [];
+    private ?User $author = null;
 
+    /**
+     * @throws UserException
+     */
     public function __construct(array $data = [])
     {
+        $this->created_at = date('Y-m-d H:i:s');
+
         parent::__construct($data);
+
+        if ($this->author_id != null) {
+            $this->author = (new UserManager(new PDOFactory()))->getUserById($this->author_id);
+        } else {
+            $this->author = new User();
+        }
     }
 
     public function setId(int $id): void
@@ -74,6 +92,10 @@ class Comment extends BaseEntity
     {
         return $this->created_at;
     }
+    public function getAuthor(): User
+    {
+        return $this->author;
+    }
 
     /**
      * @return CommentLike[]
@@ -85,9 +107,14 @@ class Comment extends BaseEntity
 
     /**
      * @return Comment[]
+     * @throws UserException
      */
     public function getAnswers() : array
     {
+        if (empty($this->answers)) {
+            $manager = new CommentManager(new PDOFactory());
+            $this->answers = $manager->getCommentAnswers($this->getId());
+        }
         return $this->answers;
     }
 }

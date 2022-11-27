@@ -28,25 +28,20 @@ class AuthController extends AbstractController
         $password = Filters::postString('password');
 
         if (!empty($authenticationMethod) && !empty($password)) {
-            if (Regex::validateEmail($authenticationMethod)) {
-                $user = (new UserManager(new PDOFactory()))->getUserByEmail($authenticationMethod);
-            } else if (Regex::validatePhone($authenticationMethod)) {
-                $user = (new UserManager(new PDOFactory()))->getUserByPhone($authenticationMethod);
-            } else {
-                $user = (new UserManager(new PDOFactory()))->getUserByUsername($authenticationMethod);
-            }
+            try {
+                $manager = new UserManager(new PDOFactory());
+                $user = $manager->getUserByAuthenticationMethod($authenticationMethod);
 
-            if ($user->getId() != null) {
-                if (password_verify($password, $user->getPassword())) {
+                if ($user->passwordMatch($password)) {
                     $_SESSION['user'] = serialize($user);
-                    Tools::redirect('/');
+                    Tools::redirect("/");
                 } else {
-                    $_SESSION['error'] = 'Wrong password';
-                    Tools::redirect('/auth');
+                    $_SESSION['error'] = 'Invalid credentials';
+                    Tools::redirect("/?popup=login&error=invalid-credentials");
                 }
-            } else {
-                $_SESSION['error'] = 'User not found';
-                Tools::redirect('/auth');
+            } catch (UserException $e) {
+                $_SESSION['error'] = 'Invalid credentials';
+                Tools::redirect("/?popup=login&error=invalid-credentials");
             }
         } else {
             $_SESSION['error'] = 'Missing fields';
@@ -61,25 +56,30 @@ class AuthController extends AbstractController
             Tools::redirect("/");
         }
 
-        $user = new User([
-            'username' => Filters::postString('username'),
-            'email' => Filters::postString('email'),
-            'password' => Filters::postString('password'),
-            'firstname' => Filters::postString('firstname'),
-            'lastname' => Filters::postString('lastname'),
-            'phone' => Filters::postString('phone'),
-            'date_of_birth' => Filters::postString('date_of_birth'),
-            'avatar_url' => Filters::postString('avatar_url'),
-            'bio' => Filters::postString('bio'),
-        ]);
+        if (!empty(Filters::postString('password')) && !empty(Filters::postString('password-confirm')) && Filters::postString('password') === Filters::postString('password-confirm')) {
+            try {
+                $user = new User([
+                    'username' => strtolower(Filters::postString('username')),
+                    'email' => strtolower(Filters::postString('email')),
+                    'password' => Filters::postString('password'),
+                    'firstname' => Tools::capitalize(Filters::postString('firstname')),
+                    'lastname' => Tools::capitalize(Filters::postString('lastname')),
+                    'phone' => Filters::postString('phone'), // NOTE: Obtional
+                    'date_of_birth' => Filters::postString('date_of_birth'), // NOTE: Obtional
+                ]);
 
-        try {
-            (new UserManager(new PDOFactory()))->createUser($user);
-            $_SESSION['success'] = 'User created';
-            Tools::redirect('/');
-        } catch (UserException $e) {
-            $_SESSION['error'] = $e->getMessage();
-            $_SESSION['completed_fields'] = $user;
+                $user->setHashedPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
+
+                (new UserManager(new PDOFactory()))->createUser($user);
+                $_SESSION['success'] = 'User created';
+                Tools::redirect('/');
+
+            } catch (UserException $e) {
+                $_SESSION['error'] = $e->getMessage();
+                Tools::redirect('/?popup=register');
+            }
+        } else {
+            $_SESSION['error'] = 'Passwords do not match';
             Tools::redirect('/?popup=register');
         }
     }

@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Entities\BaseEntity;
 use App\Factories\PDOFactory;
+use App\Managers\CommentManager;
 use App\Managers\Exceptions\UserException;
 use App\Managers\UserManager;
 
@@ -80,10 +81,15 @@ class Post extends BaseEntity {
 
     /**
      * @return Comment[]
+     * @throws UserException
      */
     public function getComments(): array
     {
-        return $this->comments;
+        if (empty($this->answers)) {
+            $manager = new CommentManager(new PDOFactory());
+            $this->answers = $manager->getPostComments($this->getId());
+        }
+        return $this->answers;
     }
 
     /**
