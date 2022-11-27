@@ -13,7 +13,7 @@ use Exception;
 
 class UserController extends AbstractController
 {
-    #[Route("/users/{id}", name: "user-profile", methods: ["GET"])]
+    #[Route("/users/{id}", name: "user-profile", methods: [HttpMethods::GET])]
     public function userView(int $id): string
     {
         $user = null;
@@ -77,6 +77,30 @@ class UserController extends AbstractController
 
     #[Route("/users/{id}", name: "user-delete", methods: [HttpMethods::DELETE])]
     public function userDelete()
+    {
+        Tools::redirect("/");
+    }
+
+    #[Route("/users/{id}/follow", name: "user-follow", methods: [HttpMethods::POST])]
+    public function userFollow()
+    {
+        Tools::redirect("/");
+    }
+
+    #[Route("/users/{id}/unfollow", name: "user-unfollow", methods: [HttpMethods::POST])]
+    public function userUnfollow()
+    {
+        Tools::redirect("/");
+    }
+
+    #[Route("/users/{id}/followers", name: "user-followers", methods: [HttpMethods::GET])]
+    public function userFollowers()
+    {
+        Tools::redirect("/");
+    }
+
+    #[Route("/users/{id}/followings", name: "user-followings", methods: [HttpMethods::GET])]
+    public function userFollowings()
     {
         Tools::redirect("/");
     }

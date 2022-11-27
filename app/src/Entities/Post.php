@@ -26,14 +26,15 @@ class Post extends BaseEntity {
      */
     public function __construct(array $data = [])
     {
+        $this->created_at = date('Y-m-d H:i:s');
+
+        parent::__construct($data);
+
         if ($this->author_id != null) {
             $this->author = (new UserManager(new PDOFactory()))->getUserById($this->author_id);
         } else {
             $this->author = new User();
         }
-        $this->created_at = date('Y-m-d H:i:s');
-
-        parent::__construct($data);
     }
 
     # GETTERS
