@@ -27,8 +27,7 @@
     "sass": "^1.56.1"
   },
   "dependencies": {
-    "@parcel/transformer-sass": "^2.8.0",
-    "node": "^19.1.0"
+    "@parcel/transformer-sass": "^2.8.0"
   },
   "main": "index.js",
   "keywords": []
