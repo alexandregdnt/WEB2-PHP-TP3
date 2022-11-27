@@ -24,9 +24,9 @@ Voici la commande à exécuter pour installer et exécuter le projet : `docker c
 
 ## Configurer l'environnement de travail
 
-````
+```
 npm init
-``
+```
 - installer sass 
 ```
 npm install sass --save-dev
