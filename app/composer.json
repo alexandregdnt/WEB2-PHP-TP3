@@ -18,5 +18,7 @@
             "name": "Jessica Marie Sainte"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-pdo": "*"
+    }
 }

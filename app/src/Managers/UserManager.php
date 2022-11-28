@@ -4,6 +4,7 @@ namespace App\Managers;
 
 use App\Entities\Role;
 use App\Entities\User;
+use App\Helpers\Regex;
 use App\Managers\Exceptions\UserException;
 
 class UserManager extends BaseManager
@@ -27,6 +28,20 @@ class UserManager extends BaseManager
             return new User($data);
         } else {
             throw new UserException("User not found");
+        }
+    }
+
+    /**
+     * @throws UserException
+     */
+    public function getUserByAuthenticationMethod(string $value): User
+    {
+        if (Regex::validateEmail($value)) {
+            return $this->getUserByEmail($value);
+        } else if (Regex::validatePhone($value)) {
+            return $this->getUserByPhone($value);
+        } else {
+            return $this->getUserByUsername($value);
         }
     }
 
@@ -182,13 +197,13 @@ class UserManager extends BaseManager
         try {
             $db = $this->pdo;
             $request = $db->prepare("
-            INSERT INTO users (email, username, phone, password, firstname, lastname, date_of_birth, created_at, updated_at)
+            INSERT INTO users (email, username, phone, hashed_password, firstname, lastname, date_of_birth, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
             $request->execute(array(
                 $user->getEmail(),
                 $user->getUsername(),
                 $user->getPhone(),
-                $user->getPassword(),
+                $user->getHashedPassword(),
                 $user->getFirstname(),
                 $user->getLastname(),
                 $user->getDateOfBirth(),
@@ -198,7 +213,11 @@ class UserManager extends BaseManager
             $user->setId($db->lastInsertId());
             return $user;
         } catch (\PDOException $e) {
-            throw new UserException($e->getMessage());
+            if ($e->getCode() == 23000) {
+                throw new UserException("Email or username already exists");
+            } else {
+                throw new UserException($e->getMessage());
+            }
         }
     }
 
@@ -213,7 +232,7 @@ class UserManager extends BaseManager
             $db = $this->pdo;
             $request = $db->prepare("
             UPDATE users
-            SET email = ?, username = ?, phone = ?, bio = ?, password = ?, firstname = ?, lastname = ?, date_of_birth = ?, updated_at = ?
+            SET email = ?, username = ?, phone = ?, bio = ?, hashed_password = ?, firstname = ?, lastname = ?, date_of_birth = ?, updated_at = ?
             WHERE id = ?;");
 
             $request->execute(array(
@@ -221,7 +240,7 @@ class UserManager extends BaseManager
                 $user->getUsername(),
                 $user->getPhone(),
                 $user->getBio(),
-                $user->getPassword(),
+                $user->getHashedPassword(),
                 $user->getFirstname(),
                 $user->getLastname(),
                 $user->getDateOfBirth(),

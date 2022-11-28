@@ -45,7 +45,19 @@ foreach ($controllers as $controller) {
 }
 
 foreach ($routesObj as $route) {
-    if (!$route->macth($url) || !in_array($_SERVER["REQUEST_METHOD"], $route->getMethods())) {
+//    if (in_array(\App\Types\HttpMethods::from($_SERVER['REQUEST_METHOD']), $route->getMethods())) {
+//        if (preg_match("/^" . $route->getPath() . "$/", $url, $matches)) {
+//            array_shift($matches);
+//            $params = array_combine($route->getParams(), $matches);
+//            $controller = $route->getController();
+//            $action = $route->getAction();
+//            $controller = new $controller($action, $params, $user);
+//            echo $controller->render($action . '.php', $params);
+//            exit;
+//        }
+//    }
+
+    if (!$route->macth($url) || !in_array(\App\Types\HttpMethods::tryFrom($_SERVER["REQUEST_METHOD"]), $route->getMethods())) {
         continue;
     }
 

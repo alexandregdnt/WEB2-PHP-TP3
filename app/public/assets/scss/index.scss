@@ -1,0 +1,233 @@
+// --------------------------------------------------------------
+//  Variable CSS        
+// --------------------------------------------------------------
+$color-pink: #C9356E;
+$color-lightBlue: #B7DCF4;
+$color-blue: #045A95;
+$color-text: #000000;
+$font-size-text: 14px;
+$font-size-h1: 80px;
+$font-size-h2: 50px;
+$font-size-h3: 40px;
+$font-size-h4: 30px;
+$font-weight-titre: 800;
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Spectral', serif;
+    $font-size-text: 14px;
+    overflow-x: hidden;
+    color: $color-text;
+    width: fit-content;
+}
+// --------------------------------------------------------------
+//            
+// --------------------------------------------------------------
+.card-link {
+    color: inherit;
+    cursor: pointer;
+}
+
+// --------------------------------------------------------------
+//            Section header
+// --------------------------------------------------------------
+.section-header {
+    background-color: white;
+    object-fit: cover;
+    height: 30vh;
+    padding: 1rem;
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .h1 {
+        font-size: $font-size-h1;
+        margin-top: 5rem;
+        padding-right: 10%;
+        text-decoration: none;
+        font-weight: $font-weight-titre;
+        color: $color-text;
+    }
+    .nav-link {
+        padding-bottom: 0;
+        font-weight: $font-weight-titre;
+        color: $color-text;
+    }
+    .dropdown-menu {
+        color:$color-text;    
+    }
+    .section-header__user {
+        text-decoration: none;
+        font-weight: $font-weight-titre;
+        padding-right: 2rem;
+        button.nav-link {
+            background-color: transparent;
+            border: none;
+
+        }
+        svg {
+            margin-left: 0.5rem;
+        }
+    }
+}
+// ----------- Responsive header
+@media (max-width: 821px) {
+    .section-header {
+        height: auto;
+        padding-bottom: 0;
+        &__wrapper {
+            flex-wrap: wrap;
+        }
+        .section-header__user {
+            padding-right: 0;
+        }
+        .h1 {
+            font-size: 2rem;
+            margin-top: 0.5rem;
+        }
+        nav {
+            order: 3;
+            width: 100%;
+            padding-bottom: 0;
+            .navbar-nav {
+                display: flex;
+                flex-direction: row;
+                gap: 30%;
+            }
+            .nav-link {
+                font-size: 15px;
+            }
+            .navbar-nav .dropdown-menu {
+                position: absolute;
+            }
+            .dropdown-menu[data-bs-popper] {
+                left: -50%;
+            }
+        }
+    }
+}
+
+.header-border {
+    border: 1px solid black;
+    width: 90%;
+    margin: auto;
+}
+
+// --------------------------------------------------------------
+//            Modal
+// --------------------------------------------------------------
+.modal-content {
+        color: $color-text;
+}
+
+// --------------------------------------------------------------
+//            Section Post On top
+// --------------------------------------------------------------
+.section__OnTop {
+    padding: 3rem;
+    display: flex;
+    gap: 3%;
+    flex-direction: row;
+    height: fit-content;
+    .OnTop__card, .OnTop__aside {
+        display: flex;
+        flex-direction: column;
+    }
+    .OnTop__card {
+        width: 100%;
+        .aside-card__card-title h2 {
+            font-size: $font-size-h2;
+        }
+        .OnTop-card-img {
+            width: 100%;
+            margin-bottom: 5%;
+            overflow: hidden;
+            img {
+                object-fit: cover;
+                width: inherit;
+            }
+        }
+        .onTop__description {
+            padding: 20px 10px;
+        }
+    }
+    .OnTop__aside {
+        gap: 2%;
+        justify-content: space-between;
+    }
+    .aside-card__card-title {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .OnTop__aside-card {
+        display: flex;
+        flex-direction: row;
+        height: fit-content;
+        overflow: hidden;
+        padding-bottom: 2%;
+        .aside-card__card-img {
+            width: 95%;
+            img {
+                width: 100%;
+            }
+        }
+        .aside-card__description {
+            padding: 10px 10px 10px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 2%;
+        }
+        h2 {
+            font-size: revert;
+            margin-bottom: 0;
+        }
+    }
+}
+// ----------- Responsive On Top
+@media (max-width: 1030px) {
+    .section__OnTop {
+        flex-direction: column;
+    }
+}
+@media (max-width: 821px) {
+    .section__OnTop {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .section__OnTop {
+        padding: 1rem;
+        .OnTop__card {
+            border-bottom: 1px solid $color-text;
+            margin-bottom: 1rem;
+            .aside-card__card-title {
+                h2 {
+                    font-size: $font-size-h4;
+                }
+            }
+        }
+        .OnTop__aside-card {
+            .aside-card__card-img {
+                width: 100%;
+            }
+            h2 {
+                font-size: 20px;
+            }
+            .aside-card__description {
+                padding: 0 5px;
+            }
+        }
+    }
+}
+

@@ -2,9 +2,11 @@
 
 namespace App\Managers;
 
+use App\Entities\Comment;
 use App\Entities\Post;
 use App\Entities\User;
 use App\Managers\Exceptions\PostException;
+use App\Managers\Exceptions\UserException;
 
 class PostManager extends BaseManager
 {
@@ -56,6 +58,7 @@ class PostManager extends BaseManager
     /**
      * @param int|null $i
      * @return Post[]
+     * @throws UserException
      */
     public function getAllPosts(int $i = null): array
     {

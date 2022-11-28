@@ -3,6 +3,7 @@
 namespace App\Routes;
 
 use App\Types\HttpMethods;
+use Exception;
 
 #[\Attribute]
 class Route
@@ -54,9 +55,15 @@ class Route
 
     /**
      * @param HttpMethods[] $methods
-    */
+     * @throws Exception
+     */
     public function setMethods(array $methods = [HttpMethods::GET]): self
     {
+        foreach ($methods as $method) {
+            if (is_string($method) && HttpMethods::tryFrom($method) === null) {
+                throw new Exception("Invalid method: " . $method);
+            }
+        }
         $this->methods = $methods;
         return $this;
     }
