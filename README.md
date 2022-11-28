@@ -1,4 +1,4 @@
-# DEMOW2
+# WEB2-PHP-TP3
 Un blog en php réalisé dans le cadre de la formation de développeur web d'HETIC. 
 
 ## Démonstation
