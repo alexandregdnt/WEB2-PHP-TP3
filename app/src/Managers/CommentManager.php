@@ -15,7 +15,7 @@ class CommentManager extends BaseManager
      */
     public function getPostComments(int $post_id): array {
         $db = $this->pdo;
-        $query = "SELECT * FROM comments WHERE post_id = :post_id";
+        $query = "SELECT * FROM comments WHERE post_id = :post_id ORDER BY created_at ASC";
         $statement = $db->prepare($query);
         $statement->bindValue(":post_id", $post_id);
         $statement->execute();
@@ -46,5 +46,16 @@ class CommentManager extends BaseManager
             $comments[] = new Comment($data);
         }
         return $comments;
+    }
+
+    public function commentPost(int $post_id, int $author_id, string $content): void
+    {
+        $db = $this->pdo;
+        $query = "INSERT INTO comments (post_id, author_id, content) VALUES (:post_id, :author_id, :content)";
+        $statement = $db->prepare($query);
+        $statement->bindValue(":post_id", $post_id);
+        $statement->bindValue(":author_id", $author_id);
+        $statement->bindValue(":content", $content);
+        $statement->execute();
     }
 }

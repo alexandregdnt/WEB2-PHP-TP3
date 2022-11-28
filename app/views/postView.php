@@ -3,6 +3,7 @@
  * @var App\Entities\Post $post
  * @var App\Entities\Comment $comments[]
  */
+$displayedCommentsId = [];
 ?>
 
 <h1><?= $post->getTitle() ?></h1>
@@ -21,6 +22,10 @@
     <div class="comments">
         <ul>
             <?php foreach ($comments as $comment): ?>
+            <?php
+                if (in_array($comment->getId(), $displayedCommentsId)) continue;
+                $displayedCommentsId[] = $comment->getId();
+            ?>
                 <li>
                     <p><?= $comment->getContent() ?></p>
                     <a href="/users/<?= $comment->getAuthor()->getId() ?>"><?= $comment->getAuthor()->getUsername() ?></a>

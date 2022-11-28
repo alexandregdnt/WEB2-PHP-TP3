@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Factories\PDOFactory;
 use App\Helpers\Filters;
 use App\Helpers\Tools;
+use App\Managers\CommentManager;
 use App\Managers\Exceptions\PostException;
 use App\Managers\Exceptions\UserException;
 use App\Managers\PostManager;
@@ -170,7 +171,7 @@ class PostController extends AbstractController
         $content = Filters::postString("content");
 
         if (!empty($content)) {
-            $manager = new PostManager(new PDOFactory());
+            $manager = new CommentManager(new PDOFactory());
             $manager->commentPost($id, $this->getUser()->getId(), $content);
 
             Tools::redirect("/");

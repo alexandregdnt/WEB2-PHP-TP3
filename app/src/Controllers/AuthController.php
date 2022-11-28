@@ -14,9 +14,6 @@ use App\Types\HttpMethods;
 
 class AuthController extends AbstractController
 {
-    /**
-     * @throws UserException
-     */
     #[Route("/auth/login", name: "login", methods: [HttpMethods::POST])]
     public function login(): void
     {
@@ -69,8 +66,8 @@ class AuthController extends AbstractController
                 ]);
 
                 $user->setHashedPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
-
-                (new UserManager(new PDOFactory()))->createUser($user);
+                $user->setId((new UserManager(new PDOFactory()))->createUser($user));
+                $_SESSION['user'] = serialize($user);
                 $_SESSION['success'] = 'User created';
                 Tools::redirect('/');
 

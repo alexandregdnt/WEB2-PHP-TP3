@@ -69,39 +69,98 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route("/users", name: "user-profile", methods: [HttpMethods::POST])]
-    public function userCreate()
-    {
-        Tools::redirect("/");
-    }
-
     #[Route("/users/{id}", name: "user-delete", methods: [HttpMethods::DELETE])]
     public function userDelete()
     {
-        Tools::redirect("/");
+        if (!$this->getUser() || !$this->getUser()->userRolesContains("admin")) {
+            Tools::redirect("/login");
+        }
+
+        try {
+            (new UserManager(new PDOFactory()))->deleteUser($_POST['id']);
+            $_SESSION['success'] = "User deleted";
+            Tools::redirect("/");
+        } catch (UserException $e) {
+            $_SESSION['error'] = $e->getMessage();
+            Tools::redirect("/");
+        }
     }
 
     #[Route("/users/{id}/follow", name: "user-follow", methods: [HttpMethods::POST])]
     public function userFollow()
     {
-        Tools::redirect("/");
+        if (!$this->getUser()) {
+            Tools::redirect("/login");
+        }
+
+        try {
+            (new UserManager(new PDOFactory()))->followUser($this->getUser()->getId(), $_POST['id']);
+            $_SESSION['success'] = "User followed";
+            Tools::redirect("/");
+        } catch (UserException $e) {
+            $_SESSION['error'] = $e->getMessage();
+            Tools::redirect("/");
+        }
     }
 
     #[Route("/users/{id}/unfollow", name: "user-unfollow", methods: [HttpMethods::POST])]
     public function userUnfollow()
     {
-        Tools::redirect("/");
+        if (!$this->getUser()) {
+            Tools::redirect("/login");
+        }
+
+        try {
+            (new UserManager(new PDOFactory()))->unfollowUser($this->getUser()->getId(), $_POST['id']);
+            $_SESSION['success'] = "User unfollowed";
+            Tools::redirect("/");
+        } catch (UserException $e) {
+            $_SESSION['error'] = $e->getMessage();
+            Tools::redirect("/");
+        }
     }
 
     #[Route("/users/{id}/followers", name: "user-followers", methods: [HttpMethods::GET])]
     public function userFollowers()
     {
-        Tools::redirect("/");
+        if (!$this->getUser()) {
+            Tools::redirect("/login");
+        }
+
+        $user = null;
+        try {
+            $user = (new UserManager(new PDOFactory()))->getUserById($_GET['id']);
+        } catch (Exception $e) {
+            $_SESSION['error'] = "User not found";
+            Tools::redirect("/");
+        }
+
+        return $this->render("userFollowers.php", [
+            "user" => $user,
+            "userIsConnected" => $this->getUser() && $this->getUser()->getId() === $user->getId(),
+            "userIsAdmin" => $this->getUser() && $this->getUser()->userRolesContains("admin"),
+        ], $user->getUsername());
     }
 
     #[Route("/users/{id}/followings", name: "user-followings", methods: [HttpMethods::GET])]
     public function userFollowings()
     {
-        Tools::redirect("/");
+        if (!$this->getUser()) {
+            Tools::redirect("/login");
+        }
+
+        $user = null;
+        try {
+            $user = (new UserManager(new PDOFactory()))->getUserById($_GET['id']);
+        } catch (Exception $e) {
+            $_SESSION['error'] = "User not found";
+            Tools::redirect("/");
+        }
+
+        return $this->render("userFollowings.php", [
+            "user" => $user,
+            "userIsConnected" => $this->getUser() && $this->getUser()->getId() === $user->getId(),
+            "userIsAdmin" => $this->getUser() && $this->getUser()->userRolesContains("admin"),
+        ], $user->getUsername());
     }
 }
